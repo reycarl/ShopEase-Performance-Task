@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Products | ShopEase{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">SERVER-DRIVEN STORE</p>
+    <h1>Find something useful.</h1>
+    <p>Browse products with live server-side filtering powered by HTMX.</p>
+  </div>
+  <a class="button secondary" href="{% url 'cart' %}">View Cart</a>
+</section>
+
+<section class="filters" aria-label="Product filters">
+  <input class="input" type="search" name="q" value="{{ q }}" placeholder="Search name or description"
+         hx-get="{% url 'product_list' %}" hx-trigger="keyup changed delay:300ms" hx-target="#product-grid"
+         hx-indicator="#loading" hx-include="[name='category'],[name='sort']">
+  <select class="input" name="category" hx-get="{% url 'product_list' %}" hx-trigger="change"
+          hx-target="#product-grid" hx-indicator="#loading" hx-include="[name='q'],[name='sort']">
+    <option value="">All categories</option>
+    {% for category in categories %}
+      <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
+    {% endfor %}
+  </select>
+  <select class="input" name="sort" hx-get="{% url 'product_list' %}" hx-trigger="change"
+          hx-target="#product-grid" hx-indicator="#loading" hx-include="[name='q'],[name='category']">
+    <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option>
+    <option value="price_low" {% if sort == "price_low" %}selected{% endif %}>Price: low to high</option>
+    <option value="price_high" {% if sort == "price_high" %}selected{% endif %}>Price: high to low</option>
+  </select>
+  <span id="loading" class="htmx-indicator" role="status">Loading…</span>
+</section>
+
+<div id="product-grid">
+  {% include "partials/_product_grid.html" %}
+</div>
+{% endblock %}

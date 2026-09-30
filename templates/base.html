@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ShopEase{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<header class="site-header">
+  <nav class="navbar">
+    <a class="brand" href="{% url 'product_list' %}">ShopEase</a>
+    <button class="nav-toggle" type="button" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="{% url 'product_list' %}">Products</a>
+      <a href="{% url 'product_manage' %}">Manage</a>
+      <a href="{% url 'cart' %}" class="cart-link">Cart <span id="cart-badge" class="badge">{{ cart_count }}</span></a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  {% if messages %}
+    <div class="messages" aria-live="polite">
+      {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <p>ShopEase • Django Templates + Forms + HTMX</p>
+</footer>
+</body>
+</html>

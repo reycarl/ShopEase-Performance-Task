@@ -1,0 +1,13 @@
+<aside class="summary-card sticky">
+  <h2>Order Summary</h2>
+  <div class="summary-line"><span>Subtotal</span><strong>₱{{ subtotal|floatformat:2 }}</strong></div>
+  <div class="summary-line"><span>Shipping</span><strong>₱{{ shipping|floatformat:2 }}</strong></div>
+  <hr>
+  <div class="summary-line total"><span>Total</span><strong>₱{{ total|floatformat:2 }}</strong></div>
+  <p class="muted">Payment is simulated for this performance task.</p>
+</aside>
+<script>
+document.getElementById("id_shipping_method")?.addEventListener("change", function () {
+  htmx.ajax("GET", "{% url 'checkout_summary' %}?shipping_method=" + encodeURIComponent(this.value), "#order-summary");
+});
+</script>

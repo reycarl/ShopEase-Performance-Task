@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Checkout | ShopEase{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">CHECKOUT</p><h1>Complete Your Order</h1></div><a class="button secondary" href="{% url 'cart' %}">Back to Cart</a></div>
+<div class="checkout-layout">
+  <div>
+    <form method="post" hx-post="{% url 'checkout' %}" hx-target="#checkout-form" hx-swap="outerHTML" hx-indicator="#checkout-loading" id="checkout-form">
+      {% include "partials/_checkout_form.html" %}
+    </form>
+  </div>
+  <div id="order-summary">
+    {% include "partials/_order_summary.html" %}
+  </div>
+</div>
+{% endblock %}

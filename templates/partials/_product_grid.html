@@ -1,0 +1,33 @@
+<div class="result-row">
+  <strong>{{ page_obj.paginator.count }} result{{ page_obj.paginator.count|pluralize }}</strong>
+  {% if q %}<span>for “{{ q }}”</span>{% endif %}
+</div>
+
+{% if products %}
+<div class="product-grid">
+  {% for product in products %}
+    {% include "partials/_product_card.html" %}
+  {% endfor %}
+</div>
+{% else %}
+  <div class="empty-state">
+    <h2>No products found</h2>
+    <p>Try a different search term or category.</p>
+  </div>
+{% endif %}
+
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pagination" aria-label="Pagination">
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&category={{ selected_category }}&sort={{ sort }}"
+       hx-get="{% url 'product_list' %}?page={{ page_obj.previous_page_number }}&q={{ q }}&category={{ selected_category }}&sort={{ sort }}"
+       hx-target="#product-grid" hx-indicator="#loading">Previous</a>
+  {% endif %}
+  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&category={{ selected_category }}&sort={{ sort }}"
+       hx-get="{% url 'product_list' %}?page={{ page_obj.next_page_number }}&q={{ q }}&category={{ selected_category }}&sort={{ sort }}"
+       hx-target="#product-grid" hx-indicator="#loading">Next</a>
+  {% endif %}
+</nav>
+{% endif %}

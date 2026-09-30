@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Manage Products | ShopEase{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">STAFF</p><h1>Product Management</h1></div>
+  <a class="button" href="{% url 'product_create' %}">+ Add Product</a>
+</div>
+
+<div class="management-toolbar">
+  <input class="input" type="search" name="q" value="{{ q }}" placeholder="Search products"
+         hx-get="{% url 'product_manage' %}" hx-trigger="keyup changed delay:300ms"
+         hx-target="#manage-table" hx-indicator="#manage-loading">
+  <span id="manage-loading" class="htmx-indicator">Loading…</span>
+</div>
+
+<div id="manage-table">
+  {% include "partials/_product_manage_table.html" %}
+</div>
+{% endblock %}

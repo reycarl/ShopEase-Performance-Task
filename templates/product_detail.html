@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} | ShopEase{% endblock %}
+{% block content %}
+<div class="detail-layout">
+  <div class="detail-image">
+    {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<div class="image-placeholder large">ShopEase</div>{% endif %}
+  </div>
+  <div class="detail-copy">
+    <span class="category">{{ product.category.name }}</span>
+    <h1>{{ product.name }}</h1>
+    <p class="price">₱{{ product.price|floatformat:2 }}</p>
+    <p>{{ product.description }}</p>
+    {% if error %}<div class="field-error" role="alert">{{ error }}</div>{% endif %}
+    {% if product.stock %}
+      <form method="post" class="stack">
+        {% csrf_token %}
+        <label for="quantity">Quantity</label>
+        <input class="input small-input" id="quantity" name="quantity" type="number" min="1" max="{{ product.stock }}" value="1">
+        <small>Maximum available: {{ product.stock }}</small>
+        <button class="button" type="submit">Add to Cart</button>
+      </form>
+    {% else %}
+      <p class="stock out">Out of Stock</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

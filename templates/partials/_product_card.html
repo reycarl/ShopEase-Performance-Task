@@ -1,0 +1,27 @@
+<article class="product-card">
+  <a href="{{ product.get_absolute_url }}" class="product-image-link">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% else %}
+      <div class="image-placeholder">ShopEase</div>
+    {% endif %}
+  </a>
+  <div class="product-body">
+    <span class="category">{{ product.category.name }}</span>
+    <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+    <p class="description">{{ product.description|truncatewords:16 }}</p>
+    <div class="product-meta">
+      <strong>₱{{ product.price|floatformat:2 }}</strong>
+      {% include "partials/_stock_badge.html" %}
+    </div>
+    {% if product.stock %}
+      <form hx-post="{% url 'cart_add' product.pk %}" hx-target="#cart-badge" hx-swap="outerHTML" hx-indicator="#loading">
+        {% csrf_token %}
+        <input type="hidden" name="quantity" value="1">
+        <button class="button full" type="submit">Add to Cart</button>
+      </form>
+    {% else %}
+      <button class="button disabled full" disabled>Out of Stock</button>
+    {% endif %}
+  </div>
+</article>

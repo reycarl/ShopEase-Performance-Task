@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Not Found | ShopEase{% endblock %}
+{% block content %}
+<section class="empty-state">
+  <h1>404 — Page not found</h1>
+  <p>The product, order, or page you requested does not exist.</p>
+  <a class="button" href="{% url 'product_list' %}">Back to Products</a>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% csrf_token %}
+{% if form.non_field_errors %}
+<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>
+{% endif %}
+{% for field in form %}
+<div class="form-field">
+  {{ field.label_tag }}
+  {{ field }}
+  {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+  {% for error in field.errors %}<div class="field-error" role="alert">{{ error }}</div>{% endfor %}
+</div>
+{% endfor %}
+<div class="form-actions">
+  <button class="button" type="submit">Place Order</button>
+  <span id="checkout-loading" class="htmx-indicator">Processing…</span>
+</div>

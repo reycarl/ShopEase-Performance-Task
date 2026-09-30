@@ -1,0 +1,33 @@
+{% if items %}
+<div class="cart-layout">
+  <div class="table-wrap">
+    <table class="data-table cart-table">
+      <thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+      <tbody>
+      {% for item in items %}
+      <tr>
+        <td><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+        <td>₱{{ item.product.price|floatformat:2 }}</td>
+        <td>
+          <form hx-post="{% url 'cart_update' item.product.pk %}" hx-target="#cart-container" hx-swap="outerHTML">
+            {% csrf_token %}
+            <input class="input quantity-input" name="quantity" type="number" min="1" max="{{ item.product.stock }}" value="{{ item.quantity }}">
+            <button class="button small" type="submit">Update</button>
+          </form>
+        </td>
+        <td>₱{{ item.subtotal|floatformat:2 }}</td>
+        <td><button class="button danger small" hx-delete="{% url 'cart_remove' item.product.pk %}" hx-target="#cart-container" hx-swap="outerHTML" hx-confirm="Remove this item?">Remove</button></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% include "partials/_cart_summary.html" %}
+</div>
+{% else %}
+<div class="empty-state">
+  <h2>Your cart is empty</h2>
+  <p>Add a product to continue.</p>
+  <a class="button" href="{% url 'product_list' %}">Browse Products</a>
+</div>
+{% endif %}

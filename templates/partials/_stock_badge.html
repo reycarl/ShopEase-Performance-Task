@@ -1,0 +1,7 @@
+{% if product.stock == 0 %}
+<span class="stock out">Out of Stock</span>
+{% elif product.stock <= 3 %}
+<span class="stock low">Low Stock</span>
+{% else %}
+<span class="stock in">In Stock</span>
+{% endif %}
